@@ -35,11 +35,11 @@
 
     <!-- 主内容区 -->
     <main class="layout-main">
-      <RouterView v-slot="{ Component, route }">
+      <RouterView v-slot="{ Component }">
         <component :is="Component" />
-
-        <!-- 全局页脚版权信息（首页除外） -->
-        <footer v-if="route.path !== '/'" class="global-footer">
+      </RouterView>
+      <!-- 全局页脚版权信息（首页除外） -->
+        <footer v-if="$route.path !== '/'" class="global-footer">
           <div class="footer-content">
             <div class="footer-text">
               © 2025 <a href="https://github.com/HisMax/RedInk" target="_blank" rel="noopener noreferrer">RedInk</a> by 默子 (Histone)
@@ -49,7 +49,6 @@
             </div>
           </div>
         </footer>
-      </RouterView>
     </main>
   </div>
 </template>

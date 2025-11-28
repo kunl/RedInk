@@ -102,7 +102,7 @@
         <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path><polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline><line x1="12" y1="22.08" x2="12" y2="12"></line></svg>
       </div>
       <h3>暂无相关记录</h3>
-      <p>去创建一个新的作品吧</p>
+      <p class="empty-tips">去创建一个新的作品吧</p>
     </div>
 
     <div v-else class="gallery-grid">
@@ -204,7 +204,7 @@
                 </button>
               </div>
             </div>
-            <div style="display: flex; gap: 12px; align-items: flex-start;">
+            <div style="display: flex; gap: 12px; align-items: center;">
               <button class="btn" @click="downloadAllImages" style="padding: 8px 16px; font-size: 14px;">
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-right: 6px;"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
                 打包下载
@@ -216,7 +216,7 @@
           <div class="modal-gallery-grid">
              <div v-for="(img, idx) in viewingRecord.images.generated" :key="idx" class="modal-img-item">
                 <!-- 图片预览区域 -->
-                <div class="modal-img-preview" v-if="img">
+                 <div class="modal-img-preview" v-if="img" :class="{regenerateIng: regeneratingImages.has(idx) }">
                   <img
                     :src="`/api/images/${viewingRecord.images.task_id}/${img}`"
                     loading="lazy"
@@ -229,7 +229,7 @@
                       @click="regenerateHistoryImage(idx)"
                       :disabled="regeneratingImages.has(idx)"
                     >
-                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                      <svg class="spin-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                         <path d="M23 4v6h-6"></path>
                         <path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"></path>
                       </svg>
@@ -807,13 +807,17 @@ onMounted(async () => {
   padding: 80px 0;
   color: var(--text-sub);
 }
-.empty-img { font-size: 64px; margin-bottom: 24px; opacity: 0.5; }
+.empty-img { font-size: 64px;  opacity: 0.5; }
+.empty-state-large .empty-tips {
+  margin-top: 10px;
+  color: var(--text-placeholder);
+}
 
 /* Fullscreen Modal */
 .modal-fullscreen {
   position: fixed;
   inset: 0;
-  background: rgba(0,0,0,0.9);
+  background: rgba(0,0,0,0.5);
   z-index: 999;
   display: flex;
   align-items: center;
@@ -1003,7 +1007,7 @@ onMounted(async () => {
 }
 
 .modal-gallery-grid {
-  flex: 1;
+  /* flex: 1; */
   overflow-y: auto;
   padding: 20px;
   display: grid;
@@ -1044,6 +1048,15 @@ onMounted(async () => {
 .modal-img-preview:hover .modal-img-overlay {
   opacity: 1;
   pointer-events: auto;
+}
+
+.regenerateIng .modal-img-overlay {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.regenerateIng .spin-icon {
+  animation: spin 1s linear infinite;
 }
 
 .modal-overlay-btn {

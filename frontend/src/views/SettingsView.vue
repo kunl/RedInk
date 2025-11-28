@@ -942,6 +942,8 @@ onMounted(() => {
   font-size: 12px;
   font-family: 'Monaco', 'Menlo', monospace;
   color: #6b7280;
+  word-break: break-all;
+
 }
 
 .apikey-masked.empty {
